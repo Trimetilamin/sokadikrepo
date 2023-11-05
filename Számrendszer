@@ -1,0 +1,235 @@
+package szamrendszer;
+
+import java.awt.Color;
+import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JSpinner;
+import javax.swing.JTextField;
+import javax.swing.SpinnerNumberModel;
+
+public class SzamrendszerGUI {
+
+	private JFrame frame;
+	private JLabel lblCim;
+	private JCheckBox chckbxGeneralVagynem;
+	private JButton btnGeneraThor;
+	private JButton btnKonvertaThor;
+	private int konvertalando;
+	private int alap;
+	private int hanyados1;
+	private String hanyados2;
+	private JSpinner spinner;
+	private String megoldas;
+	private List<String> megoldasSzamjegyLista = new ArrayList<>();
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					SzamrendszerGUI window = new SzamrendszerGUI();
+					window.frame.setVisible(true);
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the application.
+	 */
+	public SzamrendszerGUI() {
+		initialize();
+	}
+
+	/**
+	 * Initialize the contents of the frame.
+	 */
+	private void initialize() {
+		frame = new JFrame();
+		frame.setResizable(false);
+		frame.setBounds(100, 100, 600, 500);
+		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		frame.getContentPane().setLayout(null);
+
+		JPanel panel = new JPanel();
+		panel.setBounds(10, 11, 564, 439);
+		frame.getContentPane().add(panel);
+		panel.setLayout(null);
+
+		lblCim = new JLabel("Számrendszer beí m/V");
+		lblCim.setBounds(194, 11, 190, 27);
+		lblCim.setForeground(Color.BLACK);
+		lblCim.setBackground(Color.WHITE);
+		lblCim.setFont(new Font("Microsoft YaHei UI", Font.BOLD | Font.ITALIC, 15));
+		panel.add(lblCim);
+
+		JLabel lblGeneralt = new JLabel("Átalakítani kivánt szám:");
+		lblGeneralt.setFont(new Font("Microsoft YaHei UI", Font.BOLD, 15));
+		lblGeneralt.setBounds(41, 73, 190, 27);
+		panel.add(lblGeneralt);
+
+		JTextField textSzámMezo = new JTextField();
+		textSzámMezo.setBounds(37, 124, 139, 27);
+		panel.add(textSzámMezo);
+		textSzámMezo.setColumns(10);
+
+		chckbxGeneralVagynem = new JCheckBox("Generált szám legyen");
+		chckbxGeneralVagynem.setSelected(true);
+		chckbxGeneralVagynem.setFont(new Font("Microsoft Tai Le", Font.BOLD, 14));
+		chckbxGeneralVagynem.setBounds(37, 245, 171, 27);
+		panel.add(chckbxGeneralVagynem);
+
+		btnGeneraThor = new JButton("Gener Állás");
+		btnGeneraThor.setBackground(Color.GREEN);
+		btnGeneraThor.setFont(new Font("Microsoft YaHei", Font.BOLD, 13));
+		btnGeneraThor.setBounds(37, 298, 126, 39);
+		panel.add(btnGeneraThor);
+
+		chckbxGeneralVagynem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (chckbxGeneralVagynem.isSelected()) {
+					btnGeneraThor.setEnabled(true);
+				} else {
+					btnGeneraThor.setEnabled(false);
+				}
+			}
+		});
+
+		btnGeneraThor.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				Random random = new Random();
+				int randomNumera = random.nextInt(2147483647);
+				textSzámMezo.setText(String.valueOf(randomNumera));
+
+			}
+		});
+
+		btnKonvertaThor = new JButton("Konvert Állás");
+		btnKonvertaThor.setFont(new Font("Microsoft YaHei", Font.BOLD, 13));
+		btnKonvertaThor.setBackground(Color.GREEN);
+
+		btnKonvertaThor.setBounds(359, 298, 126, 39);
+		panel.add(btnKonvertaThor);
+
+		JTextField textMegOldás = new JTextField();
+		textMegOldás.setBounds(241, 204, 313, 27);
+		panel.add(textMegOldás);
+		textMegOldás.setColumns(10);
+
+		JLabel lblMegolds = new JLabel("Megoldás");
+		lblMegolds.setFont(new Font("Microsoft YaHei UI", Font.BOLD, 15));
+		lblMegolds.setBounds(359, 166, 114, 27);
+		panel.add(lblMegolds);
+
+		spinner = new JSpinner();
+		spinner.setModel(new SpinnerNumberModel(2, 2, 16, 1));
+		spinner.setBounds(372, 124, 59, 20);
+		panel.add(spinner);
+
+		JLabel lblSzmrendszer = new JLabel("Számrendszer");
+		lblSzmrendszer.setFont(new Font("Microsoft YaHei UI", Font.BOLD, 15));
+		lblSzmrendszer.setBounds(349, 72, 114, 28);
+		panel.add(lblSzmrendszer);
+
+		frame.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				int valasz = JOptionPane.showOptionDialog(frame, "Biztos ki akar lépni?", "Kilépés",
+						JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+				if (valasz == JOptionPane.YES_OPTION) {
+					System.exit(0);
+				}
+			}
+		});
+
+		btnKonvertaThor.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					konvertalando = Integer.valueOf(textSzámMezo.getText());
+				}
+
+				catch (NumberFormatException e2) {
+					JOptionPane.showMessageDialog(frame, "2147483647-nél kisebb számot adjon meg!", "Hibaüzenet",
+							JOptionPane.WARNING_MESSAGE);
+					textSzámMezo.setText("");
+				}
+				konvertal(konvertalando, (int) spinner.getValue());
+				kiirat(megoldasSzamjegyLista);
+			}
+
+			private void kiirat(List<String> megoldasSzamjegyLista) {
+				StringBuilder sb = new StringBuilder();
+				for (int i = megoldasSzamjegyLista.size() - 1; i >= 0; i--) {
+					sb.append(megoldasSzamjegyLista.get(i));
+				}
+				megoldas = sb.toString();
+				textMegOldás.setText(megoldas);
+				megoldasSzamjegyLista.clear();
+			}
+
+			private void konvertal(int konvertalando, int alap) {
+				while (konvertalando > 0) {
+					hanyados1 = (int) (konvertalando % alap);
+					konvertalando = (int) (konvertalando / alap);
+					switch (hanyados1) {
+					case 10: {
+						hanyados2 = "A";
+						break;
+					}
+					case 11: {
+						hanyados2 = "B";
+						break;
+					}
+					case 12: {
+						hanyados2 = "C";
+						break;
+					}
+					case 13: {
+						hanyados2 = "D";
+						break;
+					}
+					case 14: {
+						hanyados2 = "E";
+						break;
+					}
+					case 15: {
+						hanyados2 = "F";
+						break;
+					}
+					case 16: {
+						hanyados2 = "G";
+						break;
+					}
+					default:
+						hanyados2 = Integer.toString(hanyados1);
+					}
+					megoldasSzamjegyLista.add(hanyados2);
+				}
+			}
+		});
+	}
+}
